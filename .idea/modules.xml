@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/fruit-service-registry/fruit-service-registry.iml" filepath="$PROJECT_DIR$/fruit-service-registry/fruit-service-registry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fruits-consumer-service/fruits-consumer-service.iml" filepath="$PROJECT_DIR$/fruits-consumer-service/fruits-consumer-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fruits-customers-service/fruits-customers-service.iml" filepath="$PROJECT_DIR$/fruits-customers-service/fruits-customers-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/fruits-microservice.iml" filepath="$PROJECT_DIR$/.idea/fruits-microservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fruits-order-service/fruits-order-service.iml" filepath="$PROJECT_DIR$/fruits-order-service/fruits-order-service.iml" />
+    </modules>
+  </component>
+</project>

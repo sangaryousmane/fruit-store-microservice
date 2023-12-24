@@ -1,2 +1,4 @@
-package com.example.fruitsorderservice.external.models;public interface CustomerService {
+package com.example.fruitsorderservice.external.service;
+
+public interface CustomerService {
 }

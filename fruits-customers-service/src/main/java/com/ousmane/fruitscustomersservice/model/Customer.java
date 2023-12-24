@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Customer {
     
     @Id
-    private String customerId = UUID.randomUUID().toString();
+    private String customerId;
     private String firstName;
     private String lastName;
     private String email;
@@ -70,18 +70,5 @@ public class Customer {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-}
-@Embeddable
-@Getter @Setter @NoArgsConstructor
-class Address{
-    private String country;
-    private String postalCode;
-    private String city;
-
-    public Address(String country, String postalCode, String city) {
-        this.country = country;
-        this.postalCode = postalCode;
-        this.city = city;
     }
 }
