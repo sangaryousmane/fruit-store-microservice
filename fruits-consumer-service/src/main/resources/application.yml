@@ -1,0 +1,6 @@
+server:
+  port: 9293
+
+spring:
+  application:
+    name: FRUIT-CONSUMER-SERVICE
