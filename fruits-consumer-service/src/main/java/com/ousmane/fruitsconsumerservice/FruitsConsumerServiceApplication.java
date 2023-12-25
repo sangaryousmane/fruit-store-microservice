@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -26,9 +26,7 @@ public class FruitsConsumerServiceApplication {
         return (args) -> {
 
             Faker faker = new Faker();
-
             for (int i = 0; i < 200; i++) {
-
                 String fruitName = faker.food().fruit();
                 String fruitDescription = fruitName.concat(" is a fruit found ").concat(faker.weather().description());
                 Fruit fruit = Fruit.builder()

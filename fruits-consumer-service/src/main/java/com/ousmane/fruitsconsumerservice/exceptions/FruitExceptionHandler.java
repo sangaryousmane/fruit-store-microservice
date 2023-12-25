@@ -17,4 +17,13 @@ public class FruitExceptionHandler {
                         .status(HttpStatus.NOT_FOUND)
                         .build());
     }
+    @ExceptionHandler(InsufficientFruitInStore.class)
+    public ResponseEntity<ExceptionApi> fruitInsufficient(
+            InsufficientFruitInStore ex){
+        return ResponseEntity.ok(
+                ExceptionApi.builder()
+                        .errorMessage(ex.getMessage())
+                        .status(HttpStatus.NOT_FOUND)
+                        .build());
+    }
 }

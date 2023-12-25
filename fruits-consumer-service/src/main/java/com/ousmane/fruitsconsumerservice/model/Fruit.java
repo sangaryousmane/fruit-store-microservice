@@ -3,9 +3,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 
 @Entity(name = "Fruit")
-@Table(name = "fruits",
-        uniqueConstraints = @UniqueConstraint(name = "fruitUniqueName",
-        columnNames = "fruitName"))
+@Table(name = "fruits")
 @Builder
 public class Fruit {
 

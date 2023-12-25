@@ -9,7 +9,13 @@ public class ExceptionApi {
     private HttpStatus status;
     private String errorMessage;
 
-    public ExceptionApi(){}
+    public ExceptionApi() {
+    }
+
+    public ExceptionApi(HttpStatus status, String errorMessage) {
+        this.errorMessage = errorMessage;
+        this.status = status;
+    }
 
     public HttpStatus getStatus() {
         return status;

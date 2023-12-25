@@ -1,11 +1,15 @@
 package com.ousmane.fruitsconsumerservice.service;
 
 import com.ousmane.fruitsconsumerservice.exceptions.FruitNotFoundException;
+import com.ousmane.fruitsconsumerservice.exceptions.InsufficientFruitInStore;
 import com.ousmane.fruitsconsumerservice.model.Fruit;
 import com.ousmane.fruitsconsumerservice.repository.FruitRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FruitServiceImpl implements FruitService{
+public class FruitServiceImpl implements FruitService {
 
     private final FruitRepository fruitRepo;
 
@@ -41,6 +45,7 @@ public class FruitServiceImpl implements FruitService{
                 .orElseThrow(() -> new FruitNotFoundException("fruit not found"));
     }
 
+
     @Override
     public Fruit updateFruit(Long fruitId, Fruit fruit) {
         log.info("Updating fruits in DB");
@@ -59,7 +64,7 @@ public class FruitServiceImpl implements FruitService{
     public boolean deleteFruit(Long fruitId) {
         log.info("Searching fruit for deletion");
         boolean isFruitExists = fruitRepo.existsById(fruitId);
-        if(isFruitExists){
+        if (isFruitExists) {
             fruitRepo.deleteById(fruitId);
             log.info("Fruit {} deleted successfully", fruitId);
             return true;
@@ -72,4 +77,52 @@ public class FruitServiceImpl implements FruitService{
     public List<Fruit> searchFruitsByKeyword(String keyword) {
         return fruitRepo.findFruitByFruitNameContainingIgnoreCase(keyword);
     }
+
+
+    @Transactional
+    @Override
+    public void updateFruitQuantityInTransaction(Long fruitId, int quantityToAdd) {
+        Fruit fruit = getFruitById(fruitId);
+
+        if (fruit != null) {
+            log.info("Updating fruit quantity {}...", fruit.getQuantity());
+            int currentQuantity = fruit.getQuantity();
+            fruit.setQuantity(quantityToAdd + currentQuantity);
+            fruitRepo.save(fruit);
+            log.info("Updated quantity {} successfully...", quantityToAdd);
+        }
+    }
+
+
+    @Transactional
+    @Override
+    public void reduceFruitQuantity(Long fruitId, int quantityToAdd) {
+        Fruit fruit = getFruitById(fruitId);
+
+        if (fruit != null) {
+            int currentQuantity = fruit.getQuantity();
+            log.info("Reducing fruit quantity...");
+            if (quantityToAdd < currentQuantity) {
+                fruit.setQuantity(currentQuantity - quantityToAdd);
+                fruitRepo.save(fruit);
+                log.info("Reduced successfully...");
+            } else {
+                log.error("Unable to reduce quantity");
+                throw new InsufficientFruitInStore("Sorry, fruit in-store is insufficient");
+            }
+        }
+    }
+
+    @Override
+    public Page<Fruit> getFruitsWithFilters(String name, Double minPrice, Double maxPrice, Pageable pageable) {
+        return fruitRepo.findByFruitNameContainingAndPriceBetween(name, minPrice, maxPrice, pageable);
+    }
+
+    @Override
+    public List<Fruit> getAllFruitsById(List<Long> fruitId) {
+        log.info("Retrieving all fruits by Id");
+        return fruitRepo.findAllById(fruitId);
+    }
+
+
 }
