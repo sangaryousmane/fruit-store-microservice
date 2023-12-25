@@ -1,4 +1,4 @@
-package com.example.fruitsorderservice;
+package com.example.fruitsorderservice.controller;
 
 
 import com.example.fruitsorderservice.dto.OrderRequest;

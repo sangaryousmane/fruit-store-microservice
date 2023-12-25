@@ -1,8 +1,9 @@
 package com.example.fruitsorderservice.model;
 
-import com.example.fruitsorderservice.external.models.Customer;
-import com.example.fruitsorderservice.external.models.Fruit;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -10,12 +11,22 @@ import java.util.List;
 @Table(name = "orders",
         uniqueConstraints = @UniqueConstraint(name = "orderUnique",
                 columnNames = "orderId"))
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
 
     @Id
     private String orderId;
-    private Customer customer;
-    private List<Fruit> fruits;
+
+    private String customerId;
+
+
+    @ElementCollection
+    @CollectionTable(name = "ordered_fruits",
+            joinColumns = @JoinColumn(referencedColumnName = "orderId"))
+    @Column(name = "fruit_ids")
+    private List<Long> fruitIds;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
@@ -27,25 +38,36 @@ public class Order {
         return orderId;
     }
 
+    public List<Long> getFruitIds() {
+        return fruitIds;
+    }
+
+    public void setFruitIds(List<Long> fruitId) {
+        this.fruitIds = fruitId;
+    }
+
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer(Customer customerId) {
-        this.customer = customerId;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
-    public List<Fruit> getFruits() {
-        return fruits;
-    }
-
-    public void setFruits(List<Fruit> fruits) {
-        this.fruits = fruits;
-    }
+//    public List<Long> setAllFruits(List<Fruit> fruits) {
+//        List<Long> fruitList=new ArrayList<>();
+//        if (!fruits.isEmpty()){
+//           for (Fruit fruit: fruits){
+//               fruitList.add(fruit.getFruitId());
+//           }
+//        }
+//        return fruitList;
+//
+//    }
 
     public OrderStatus getOrderStatus() {
         return orderStatus;

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,12 +30,14 @@ public class OrderServiceImpl implements OrderService {
     public Order placeOrder(String customerId, List<Long> fruitIds) {
         Customer customer = customerService.getCustomerById(customerId);
 
-        if (customer != null){
+        if (customer != null) {
             List<Fruit> fruits = fruitService.getAllFruitById(fruitIds);
-            if (!fruits.isEmpty()){
-                Order newOrder=new Order();
-                newOrder.setCustomer(customer);
-                newOrder.setFruits(fruits);
+            List<Long> fruitId = new ArrayList<>();
+            fruits.forEach(f -> fruitId.add(f.getFruitId()));
+            if (!fruits.isEmpty()) {
+                Order newOrder = new Order();
+                newOrder.setCustomerId(customer.getCustomerId());
+                newOrder.setFruitIds(fruitId);
                 newOrder.setOrderStatus(OrderStatus.PAID);
                 newOrder.setPaymentType(PaymentType.CREDIT_CARD);
                 newOrder.setOrderId(UUID.randomUUID().toString());
@@ -50,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOrdersByCustomer(String customerId) {
         Customer customer = customerService.getCustomerById(customerId);
         if (customer != null)
-            return orderRepo.findByCustomer(customer);
+            return orderRepo.findByCustomer(customer.getCustomerId());
         return null;
     }
 
@@ -63,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrderHistoryForCustomer(String customerId) {
         Customer customer = customerService.getCustomerById(customerId);
-        return orderRepo.findByCustomer(customer);
+        return orderRepo.findByCustomer(customer.getCustomerId());
     }
 
     @Override
@@ -75,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean cancelOrder(String orderId) {
         boolean isOrderExist = orderRepo.existsById(orderId);
-        if(isOrderExist){
+        if (isOrderExist) {
             orderRepo.deleteById(orderId);
             return true;
         }
@@ -85,10 +88,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order updateOrder(Order order, String orderId) {
         return orderRepo.findById(orderId)
-                .map(existingOrder ->{
+                .map(existingOrder -> {
                     existingOrder.setOrderStatus(order.getOrderStatus());
                     existingOrder.setPaymentType(order.getPaymentType());
-                    existingOrder.setCustomer(order.getCustomer());
+                    existingOrder.setCustomerId(order.getCustomerId());
                     existingOrder.setOrderId(order.getOrderId());
                     return orderRepo.save(existingOrder);
                 })
