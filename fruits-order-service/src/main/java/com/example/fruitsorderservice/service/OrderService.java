@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface OrderService {
 
-    Order placeOrder(int customerId, int fruitId);
-    List<Order> getOrdersByCustomer(int customerId);
+    Order placeOrder(String customerId, List<Long> fruitId);
+    List<Order> getOrdersByCustomer(String customerId);
     List<Order> getAllOrders();
-    List<Order> getOrderHistoryForCustomer(int customerId);
+    List<Order> getOrderHistoryForCustomer(String customerId);
     Order getOrderById(String orderId);
     boolean cancelOrder(String orderId);
     Order updateOrder(Order order, String orderId);

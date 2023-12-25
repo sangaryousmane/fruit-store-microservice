@@ -17,4 +17,15 @@ public class OrderExceptionHandler {
                 .build();
         return ResponseEntity.ok(api);
     }
+
+
+    @ExceptionHandler(OrderOutOfStockException.class)
+    public ResponseEntity<ExceptionApi> orderOutOfStock(
+            OrderOutOfStockException ex){
+        return ResponseEntity.status(406).body(
+                ExceptionApi.builder()
+                        .errorMessage(ex.getMessage())
+                        .status(HttpStatus.NOT_ACCEPTABLE)
+                        .build());
+    }
 }

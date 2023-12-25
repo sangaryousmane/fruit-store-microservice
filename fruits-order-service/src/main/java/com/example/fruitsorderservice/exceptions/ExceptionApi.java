@@ -1,12 +1,13 @@
 package com.example.fruitsorderservice.exceptions;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter @Setter
-@Builder
+@Builder @AllArgsConstructor
 public class ExceptionApi {
 
     private HttpStatus status;
@@ -15,8 +16,4 @@ public class ExceptionApi {
     public ExceptionApi() {
     }
 
-    public ExceptionApi(String errorMessage, HttpStatus status) {
-        this.errorMessage = errorMessage;
-        this.status = status;
-    }
 }

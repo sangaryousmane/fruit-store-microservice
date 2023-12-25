@@ -1,6 +1,10 @@
 package com.example.fruitsorderservice.model;
 
+import com.example.fruitsorderservice.external.models.Customer;
+import com.example.fruitsorderservice.external.models.Fruit;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity(name = "Order")
 @Table(name = "orders",
@@ -10,8 +14,8 @@ public class Order {
 
     @Id
     private String orderId;
-    private int customerId;
-    private int fruitId;
+    private Customer customer;
+    private List<Fruit> fruits;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
@@ -27,20 +31,20 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customerId) {
+        this.customer = customerId;
     }
 
-    public int getFruitId() {
-        return fruitId;
+    public List<Fruit> getFruits() {
+        return fruits;
     }
 
-    public void setFruitId(int fruitId) {
-        this.fruitId = fruitId;
+    public void setFruits(List<Fruit> fruits) {
+        this.fruits = fruits;
     }
 
     public OrderStatus getOrderStatus() {

@@ -6,6 +6,3 @@ CREATE TABLE fruits(
     price         DOUBLE                NOT NULL,
     CONSTRAINT pk_fruits PRIMARY KEY (id)
 );
-
-ALTER TABLE fruits
-    ADD CONSTRAINT fruitUniqueName UNIQUE (fruitName);
