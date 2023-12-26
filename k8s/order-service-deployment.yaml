@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service-app
+spec:
+  selector:
+    matchLabels:
+      app: order-service-app
+  template:
+    metadata:
+      labels:
+        app: order-service-app
+    spec:
+      containers:
+        - name: order-service-app
+          image: ousmane1999/orderservice
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9291
+
+          env:
+            - name: EUREKA_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: eureka_service_address
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service-svc
+spec:
+  selector:
+    app: order-service-app
+  ports:
+    - port: 80
+      targetPort: 9291
