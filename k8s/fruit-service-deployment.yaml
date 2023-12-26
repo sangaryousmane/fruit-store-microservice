@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fruit-service-app
+spec:
+  selector:
+    matchLabels:
+      app: fruit-service-app
+  template:
+    metadata:
+      labels:
+        app: fruit-service-app
+    spec:
+      containers:
+        - name: fruit-service-app
+          image: ousmane1999/fruitservice
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9293
+
+          env:
+            - name: EUREKA_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: eureka-cm
+                  key: eureka_service_address
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: fruit-service-svc
+spec:
+  selector:
+    app: fruit-service-app
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 9293
