@@ -10,12 +10,12 @@ public interface FruitService {
 
     Fruit saveFruit(Fruit newFruit);
     List<Fruit> getAllFruits();
-    Fruit getFruitById(Long id);
-    Fruit updateFruit(Long id, Fruit updatedFruit);
-    boolean deleteFruit(Long id);
+    Fruit getFruitById(Integer id);
+    Fruit updateFruit(Integer id, Fruit updatedFruit);
+    boolean deleteFruit(Integer id);
     List<Fruit> searchFruitsByKeyword(String keyword);
-    void updateFruitQuantityInTransaction(Long fruitId, int quantityToAdd);
-    void reduceFruitQuantity(Long fruitId, int quantityToAdd);
+    void updateFruitQuantityInTransaction(Integer fruitId, int quantityToAdd);
+    void reduceFruitQuantity(Integer fruitId, int quantityToAdd);
     Page<Fruit> getFruitsWithFilters(String name, Double minPrice, Double maxPrice, Pageable pageable);
-    List<Fruit> getAllFruitsById(List<Long> fruitId);
+    List<Fruit> getAllFruitsById(List<Integer> fruitId);
 }

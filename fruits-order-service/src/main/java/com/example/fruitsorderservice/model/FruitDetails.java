@@ -1,35 +1,38 @@
-package com.ousmane.fruitsconsumerservice.model;
-import jakarta.persistence.*;
+package com.example.fruitsorderservice.model;
+
+import com.example.fruitsorderservice.external.models.Fruit;
+import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-@Entity(name = "Fruit")
-@Table(name = "fruits")
+@Embeddable
+@AllArgsConstructor
 @Builder
-public class Fruit {
+public class FruitDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer fruitId;
     private String fruitName;
     private String description;
     private int quantity;
     private double price;
 
-    public Fruit(){}
-    public Fruit(Integer id, String fruitName, String description, int quantity, double price) {
-        this.id = id;
-        this.fruitName = fruitName;
-        this.description = description;
-        this.quantity = quantity;
-        this.price = price;
+    public FruitDetails() {
     }
 
-    public Integer getId() {
-        return id;
+    public FruitDetails(Fruit fruit) {
+        this.fruitId = fruit.getFruitId();
+        this.fruitName = fruit.getFruitName();
+        this.description = fruit.getDescription();
+        this.price = fruit.getPrice();
+        this.quantity = fruit.getQuantity();
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getFruitId() {
+        return fruitId;
+    }
+
+    public void setFruitId(Integer fruitId) {
+        this.fruitId = fruitId;
     }
 
     public String getFruitName() {

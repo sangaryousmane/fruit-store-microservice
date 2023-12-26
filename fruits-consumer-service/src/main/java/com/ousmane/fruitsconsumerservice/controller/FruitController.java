@@ -28,7 +28,7 @@ public class FruitController {
 
     @GetMapping("/{fruitId}")
     public ResponseEntity<Fruit> getFruitById(
-            @PathVariable Long fruitId) {
+            @PathVariable Integer fruitId) {
         return ResponseEntity.ok(fruitService.getFruitById(fruitId));
     }
 
@@ -42,14 +42,14 @@ public class FruitController {
     @PutMapping("/updateFruit/{fruitId}")
     public ResponseEntity<Fruit> updateFruit(
             @RequestBody Fruit fruit,
-            @PathVariable Long fruitId) {
+            @PathVariable Integer fruitId) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(fruitService.updateFruit(fruitId, fruit));
     }
 
     @DeleteMapping("/deleteFruit/{fruitId}")
     public ResponseEntity<Map<String, Boolean>> deleteFruit(
-            @PathVariable Long fruitId) {
+            @PathVariable Integer fruitId) {
         boolean isFruitDeleted = fruitService.deleteFruit(fruitId);
         Map<String, Boolean> fruitMap = new HashMap<>();
         fruitMap.put("Deleted", isFruitDeleted);
@@ -65,7 +65,7 @@ public class FruitController {
 
     @PutMapping("/updateFruitQuantity/{fruitId}")
     public ResponseEntity<String> updateFruitQuantity(
-            @PathVariable Long fruitId,
+            @PathVariable Integer fruitId,
             @RequestParam int quantity) {
         fruitService.updateFruitQuantityInTransaction(fruitId, quantity);
         return ResponseEntity.ok("Fruit quantity updated");
@@ -73,7 +73,7 @@ public class FruitController {
 
     @PutMapping("/reduceFruitQuantity/{fruitId}")
     public ResponseEntity<String> reduceFruitQuantity(
-            @PathVariable Long fruitId,
+            @PathVariable Integer fruitId,
             @RequestParam int quantity) {
         fruitService.reduceFruitQuantity(fruitId, quantity);
         return ResponseEntity.ok("Fruit quantity reduced successfully");
@@ -92,7 +92,7 @@ public class FruitController {
 
     @GetMapping("/allFruits/{fruitId}")
     public ResponseEntity<List<Fruit>> getFruitById(
-            @PathVariable List<Long> fruitId) {
+            @PathVariable List<Integer> fruitId) {
         return ResponseEntity.ok(fruitService.getAllFruitsById(fruitId));
     }
 }

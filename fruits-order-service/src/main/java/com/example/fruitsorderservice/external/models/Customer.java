@@ -16,7 +16,6 @@ public class Customer {
     private String lastName;
     private String email;
 
-    @Embedded
     private Address address;
 
     public Customer (){}

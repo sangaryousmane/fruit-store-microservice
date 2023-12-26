@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor @Builder
 public class Fruit {
 
-    private Long fruitId;
+    private Integer fruitId;
     private String fruitName;
     private String description;
     private int quantity;

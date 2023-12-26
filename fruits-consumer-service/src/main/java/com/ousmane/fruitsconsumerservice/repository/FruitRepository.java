@@ -13,7 +13,7 @@ import java.security.PublicKey;
 import java.util.List;
 
 @Repository
-public interface FruitRepository extends JpaRepository<Fruit, Long> {
+public interface FruitRepository extends JpaRepository<Fruit, Integer> {
 
     @Query("SELECT fruit FROM Fruit fruit WHERE LOWER(fruit.fruitName)" +
             " LIKE LOWER(CONCAT('%', '?1', '%'))")

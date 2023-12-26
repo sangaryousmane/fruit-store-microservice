@@ -2,8 +2,10 @@ package com.example.fruitsorderservice.controller;
 
 
 import com.example.fruitsorderservice.dto.OrderRequest;
+import com.example.fruitsorderservice.model.FruitDetails;
 import com.example.fruitsorderservice.model.Order;
 import com.example.fruitsorderservice.service.OrderServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,10 +55,13 @@ public class OrderController {
 
     @PostMapping("/placeOrder")
     public ResponseEntity<Order> placeOrder(
-            @RequestBody OrderRequest orderRequest){
+           @Valid @RequestBody OrderRequest orderRequest){
+        List<Integer> fruitIds = orderRequest.getFruits_ordered().stream()
+                .map(FruitDetails::getFruitId).toList();
+
         Order order = orderService.placeOrder(
                 orderRequest.getCustomerId(),
-                orderRequest.getFruitIds());
+                fruitIds, orderRequest.getPaymentType());
 
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }

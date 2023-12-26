@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@FeignClient(name = "FRUITS-CUSTOMER-SERVICE")
+@FeignClient(name = "FRUITS-CUSTOMER-SERVICE/api/v1/customers")
 public interface CustomerService {
 
-    @PostMapping
+    @PostMapping("/saveCustomer")
     Customer saveCustomer(@RequestBody Customer customer);
 
 

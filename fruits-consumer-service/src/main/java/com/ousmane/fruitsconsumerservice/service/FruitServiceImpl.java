@@ -39,7 +39,7 @@ public class FruitServiceImpl implements FruitService {
     }
 
     @Override
-    public Fruit getFruitById(Long fruitId) {
+    public Fruit getFruitById(Integer fruitId) {
         log.info("Getting fruit by ID: {}", fruitId);
         return fruitRepo.findById(fruitId)
                 .orElseThrow(() -> new FruitNotFoundException("fruit not found"));
@@ -47,7 +47,7 @@ public class FruitServiceImpl implements FruitService {
 
 
     @Override
-    public Fruit updateFruit(Long fruitId, Fruit fruit) {
+    public Fruit updateFruit(Integer fruitId, Fruit fruit) {
         log.info("Updating fruits in DB");
         return fruitRepo.findById(fruitId)
                 .map(existingFruit -> {
@@ -61,7 +61,7 @@ public class FruitServiceImpl implements FruitService {
     }
 
     @Override
-    public boolean deleteFruit(Long fruitId) {
+    public boolean deleteFruit(Integer fruitId) {
         log.info("Searching fruit for deletion");
         boolean isFruitExists = fruitRepo.existsById(fruitId);
         if (isFruitExists) {
@@ -81,7 +81,7 @@ public class FruitServiceImpl implements FruitService {
 
     @Transactional
     @Override
-    public void updateFruitQuantityInTransaction(Long fruitId, int quantityToAdd) {
+    public void updateFruitQuantityInTransaction(Integer fruitId, int quantityToAdd) {
         Fruit fruit = getFruitById(fruitId);
 
         if (fruit != null) {
@@ -96,7 +96,7 @@ public class FruitServiceImpl implements FruitService {
 
     @Transactional
     @Override
-    public void reduceFruitQuantity(Long fruitId, int quantityToAdd) {
+    public void reduceFruitQuantity(Integer fruitId, int quantityToAdd) {
         Fruit fruit = getFruitById(fruitId);
 
         if (fruit != null) {
@@ -119,7 +119,7 @@ public class FruitServiceImpl implements FruitService {
     }
 
     @Override
-    public List<Fruit> getAllFruitsById(List<Long> fruitId) {
+    public List<Fruit> getAllFruitsById(List<Integer> fruitId) {
         log.info("Retrieving all fruits by Id");
         return fruitRepo.findAllById(fruitId);
     }

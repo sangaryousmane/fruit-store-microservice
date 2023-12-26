@@ -5,6 +5,7 @@ import com.example.fruitsorderservice.external.models.Customer;
 import com.example.fruitsorderservice.external.models.Fruit;
 import com.example.fruitsorderservice.external.service.CustomerService;
 import com.example.fruitsorderservice.external.service.FruitService;
+import com.example.fruitsorderservice.model.FruitDetails;
 import com.example.fruitsorderservice.model.Order;
 import com.example.fruitsorderservice.model.OrderStatus;
 import com.example.fruitsorderservice.model.PaymentType;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,21 +28,33 @@ public class OrderServiceImpl implements OrderService {
     private final FruitService fruitService;
 
     @Override
-    public Order placeOrder(String customerId, List<Long> fruitIds) {
+    public Order placeOrder(String customerId, List<Integer> fruitIds,
+                            PaymentType paymentType) {
+
+        if (fruitIds == null || customerId == null){
+            throw new OrderNotFoundException("Sorry, can't process null order");
+        }
         Customer customer = customerService.getCustomerById(customerId);
 
         if (customer != null) {
+            log.info("Retrieving fruits from fruit service");
             List<Fruit> fruits = fruitService.getAllFruitById(fruitIds);
-            List<Long> fruitId = new ArrayList<>();
-            fruits.forEach(f -> fruitId.add(f.getFruitId()));
+            List<FruitDetails> fruitDetails =
+                    fruits.stream().map(FruitDetails::new).toList();
+
+
             if (!fruits.isEmpty()) {
                 Order newOrder = new Order();
                 newOrder.setCustomerId(customer.getCustomerId());
-                newOrder.setFruitIds(fruitId);
-                newOrder.setOrderStatus(OrderStatus.PAID);
-                newOrder.setPaymentType(PaymentType.CREDIT_CARD);
+                newOrder.setFruits_ordered(fruitDetails);
+                newOrder.setOrderStatus(OrderStatus.PENDING);
+                log.info("PAYMENT PENDING.....");
+                newOrder.setPaymentType(paymentType);
                 newOrder.setOrderId(UUID.randomUUID().toString());
                 log.info("Order saved successfully with ID: {}", newOrder.getOrderId());
+                newOrder.setOrderDate(Instant.now());
+                newOrder.setOrderStatus(OrderStatus.SUCCESS);
+                log.info("PAYMENT DONE SUCCESSFULLY...");
                 return orderRepo.save(newOrder);
             }
         }
@@ -60,7 +73,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrders() {
         log.info("Retrieving all orders ");
-        return orderRepo.findAll();
+
+        List<Order> orders = orderRepo.findAll();
+        Order order = new Order();
+        order.setFruits_ordered(order.getFruits_ordered());
+        orders.add(order);
+        return orders;
     }
 
     @Override
@@ -78,10 +96,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean cancelOrder(String orderId) {
         boolean isOrderExist = orderRepo.existsById(orderId);
+        log.info("Cancelling order::{}", orderId);
         if (isOrderExist) {
             orderRepo.deleteById(orderId);
+            log.info("Order cancellation successful");
             return true;
         }
+        log.error("Order cancellation failed");
         return false;
     }
 
