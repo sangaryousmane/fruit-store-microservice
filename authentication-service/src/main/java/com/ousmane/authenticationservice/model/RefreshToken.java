@@ -1,6 +1,8 @@
 package com.ousmane.authenticationservice.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +13,8 @@ import java.time.Instant;
         uniqueConstraints = @UniqueConstraint(name = "unique_token_key",
                 columnNames = "token"))
 @Data
+@Builder
+@AllArgsConstructor
 public class RefreshToken extends BaseEntity implements Serializable {
 
     @OneToOne
