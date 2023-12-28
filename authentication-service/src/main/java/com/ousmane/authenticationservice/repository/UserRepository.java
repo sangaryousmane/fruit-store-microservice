@@ -23,5 +23,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Boolean existsByUsername(@Param("username") String username);
 
     @Query("SELECT u FROM User u WHERE u.id=:id")
-    User findById(int userId);
+    User findById(@Param("id") int userId);
 }

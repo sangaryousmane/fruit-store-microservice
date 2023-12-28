@@ -5,8 +5,8 @@ server:
 # MYSQL DB configuration
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/fruits?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
-    usernae: root
+    url: jdbc:mysql://localhost:3306/fruits
+    username: root
     password: ousmane2022&&!
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:

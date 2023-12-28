@@ -24,8 +24,7 @@ public class User extends BaseEntity implements Serializable {
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"),
-            foreignKey = @ForeignKey(name = "user_role_FK"))
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles=new HashSet<>();
 
     public User(){}

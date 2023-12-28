@@ -7,6 +7,7 @@ import com.ousmane.authenticationservice.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -23,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -46,19 +47,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .headers().frameOptions().disable()
-                .and()
+                .headers().frameOptions().disable().and()
+                .cors().and()
                 .csrf().disable()
-                .cors().and().authorizeRequests(auth ->{
-                    auth.anyRequest().permitAll();
-                })
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers(HttpMethod.POST,
+                                "/authenticate/signUp", "/authenticate/login",
+                                "/authenticate/refreshToken").permitAll()
+                        .anyRequest().authenticated())
                 .formLogin().disable()
                 .httpBasic().disable()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(authTokenFilter(jwtUtils,
+                .and()
+                .addFilterBefore(authTokenFilter(jwtUtils,
                         customUserDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

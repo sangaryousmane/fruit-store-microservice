@@ -1,5 +1,4 @@
 package com.ousmane.authenticationservice.controller;
-
 import com.ousmane.authenticationservice.exceptions.RefreshTokenException;
 import com.ousmane.authenticationservice.exceptions.RoleNotFoundException;
 import com.ousmane.authenticationservice.jwt.JwtUtils;
