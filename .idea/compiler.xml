@@ -8,12 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="fruits-customers-service" />
+        <module name="authentication-service" />
         <module name="fruits-order-service" />
         <module name="fruit-service-registry" />
         <module name="fruits-consumer-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="authentication-service" target="17" />
       <module name="fruit-service-registry" target="17" />
       <module name="fruits-consumer-service" target="17" />
       <module name="fruits-customers-service" target="17" />
@@ -22,6 +24,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="authentication-service" options="-parameters" />
       <module name="fruit-service-registry" options="-parameters" />
       <module name="fruits-consumer-service" options="-parameters" />
       <module name="fruits-customers-service" options="-parameters" />

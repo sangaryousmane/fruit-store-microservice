@@ -87,6 +87,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>fruit-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

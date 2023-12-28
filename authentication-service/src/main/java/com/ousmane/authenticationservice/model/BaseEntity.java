@@ -1,2 +1,17 @@
-package com.ousmane.authenticationservice.model;public class BaseEntity {
+package com.ousmane.authenticationservice.model;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+@MappedSuperclass
+public class BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 }
