@@ -11,7 +11,7 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddlAuto: create-drop
+      ddlAuto: update
     databasePlatform: org.hibernate.dialect.MySQL8Dialect
 
   application:
@@ -29,6 +29,6 @@ eureka:
 
 
 jwt:
-  secret: mySecretKey
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
   expireMs: 120000
   refrEshexpireMs: 120000

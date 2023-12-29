@@ -2,6 +2,8 @@ package com.ousmane.authenticationservice.jwt;
 
 import com.ousmane.authenticationservice.security.CustomUserDetailsService;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 
+import java.security.Key;
 import java.util.Date;
+import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
@@ -22,8 +26,8 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expireMs}")
-    private int jwtExpirationMs;
+//    @Value("${jwt.expireMs}")
+//    private int jwtExpirationMs;
 
     public String generateJwtToken(String username) {
         return generateTokenFromUsername(username);
@@ -36,13 +40,28 @@ public class JwtUtils {
         userDetails.getAuthorities().forEach(auth -> {
             roles.append(auth.getAuthority()).append(" ");
         });
-        return Jwts.builder()
-                .setSubject(username)
+        return Jwts
+                .builder()
                 .setIssuer(roles.toString())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public <T> T extractClaims(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    public Claims extractAllClaims(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public String getUsernameFromJwtToken(String token) {
@@ -69,6 +88,10 @@ public class JwtUtils {
         LOGGER.error("JwtUtils | validateJwtToken | JWT claims string is empty: {}", e.getMessage());
         }
         return false;
+    }
+
+    private Key getSignInKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
 }

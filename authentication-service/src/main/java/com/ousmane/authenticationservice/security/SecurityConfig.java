@@ -33,6 +33,15 @@ public class SecurityConfig {
     private final JwtUtils jwtUtils;
     private final CustomUserDetailsService customUserDetailsService;
 
+    private static final String[] URLS ={
+            "/authenticate/signUp", "/authenticate/login",
+            "/authenticate/refreshToken",
+            "/actuator/**", "/v2/api-docs",
+            "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
+            "/swagger-resources/**", "/configuration/ui",
+            "/configuration/security", "/swagger-ui/**",
+            "/webjars/**", "/swagger-ui.html"};
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -51,9 +60,7 @@ public class SecurityConfig {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.POST,
-                                "/authenticate/signUp", "/authenticate/login",
-                                "/authenticate/refreshToken").permitAll()
+                        .requestMatchers(URLS).permitAll()
                         .anyRequest().authenticated())
                 .formLogin().disable()
                 .httpBasic().disable()
@@ -69,12 +76,12 @@ public class SecurityConfig {
     }
 
 
-    @Bean
-    public WebSecurityCustomizer customizer(){
-        return (web) -> web.ignoring()
-                .requestMatchers("/authenticate/signup", "/authenticate/login",
-                "/authenticate/refreshtoken");
-    }
+//    @Bean
+//    public WebSecurityCustomizer customizer(){
+//        return (web) -> web.ignoring()
+//                .requestMatchers("/authenticate/signup", "/authenticate/login",
+//                "/authenticate/refreshtoken");
+//    }
     @Bean
     public AuthTokenFilter authTokenFilter(
             JwtUtils jwts, CustomUserDetailsService userService){
