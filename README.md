@@ -1,5 +1,7 @@
 # Fruit Store Microservice
 
+
+
 This repository contains a simple Fruit Store Microservice built with Spring Boot that allows users to manage fruits, place orders, and handle customer operations.
 
 ### Technologies Used
@@ -28,11 +30,35 @@ This repository contains a simple Fruit Store Microservice built with Spring Boo
    cd fruits-microservice
 
 3. **Build each service in the root directory**
-  ```bash
-  mvn clean install
-  docker build -t projectname:tag
+   cd fruits-microservice
+   
+4. Endpoint
+* GET /api/v1/fruits: Retrieve all fruits.
+* GET /api/v1/fruits/{id}: Retrieve a specific fruit by ID.
+* POST /api/v1/fruits/saveFruit: Add a new fruit.
+`{
+  "name": "Mango",
+  "quantity": 10,
+  "price": 1.99
+}`
 
-## Endpoint
-GET /api/v1/fruits: Retrieve all fruits.
-GET /api/v1/fruits/{id}: Retrieve a specific fruit by ID.
-POST /api/v1/fruits/saveFruit: Add a new fruit.
+* PUT /api/v1/fruits/{id}: Update a specific fruit by ID.
+Request Body:
+`{
+  "name": "Orange",
+  "quantity": 15,
+  "price": 2.49
+  }`
+
+* DELETE /api/v1/fruits/{id}: Delete a specific fruit by ID.
+* POST /orders/placeOrder: Place an order.
+Request Body:
+`{
+  "customerId": "customer_id",
+  "fruitIds": [1, 2, 3]
+  }`
+
+## Author
+- [Ousmane Sangary](https://github.com/sangaryousmane) - Software Developer
+
+
