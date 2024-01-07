@@ -63,19 +63,19 @@ Request Body:
 
 5. **Deployment**
 * Download terraform and configure on your system
-  `https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli`
+  ```https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 
 * Navigate to terraform directory and create a new aws ec2 instance 
-   `cd terraform-config 
+   ```cd terraform-config 
    terraform init
    terraform plan
-   terraform apply`
+   terraform apply
   
 * Push your docker images and push to docker hub
 * Deploy to kubernetes cluster
-   ` cd k8s
+    ```cd k8s
     kubectl apply -f *.yaml
-    minikube dashboard`
+    minikube dashboard
   
 
 ## Author
