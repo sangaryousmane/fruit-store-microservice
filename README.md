@@ -73,7 +73,7 @@ Request Body:
    terraform plan
    terraform apply
   
-* Push your docker images and push to docker hub
+* Push your docker images to docker hub and make changes to the names in your k8s manifests
 * Deploy to kubernetes cluster
     ```bash
     cd k8s
