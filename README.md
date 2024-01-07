@@ -80,5 +80,3 @@ Request Body:
 
 ## Author
 - [Ousmane Sangary](https://github.com/sangaryousmane) - Software Developer
-
-
