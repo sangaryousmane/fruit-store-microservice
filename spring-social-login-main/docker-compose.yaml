@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+  app:
+    image: 'ousmane1999/spring-jwt-social-login:latest'
+    build: ./
+    container_name: spring-jwt-authentication
+    depends_on:
+      - db
+    ports:
+      - "9090:9090"
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=831800
+      - POSTGRES_DB=customerdb

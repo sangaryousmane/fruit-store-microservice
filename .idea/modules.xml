@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/fruits-customers-service/fruits-customers-service.iml" filepath="$PROJECT_DIR$/fruits-customers-service/fruits-customers-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/fruits-microservice.iml" filepath="$PROJECT_DIR$/.idea/fruits-microservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/fruits-order-service/fruits-order-service.iml" filepath="$PROJECT_DIR$/fruits-order-service/fruits-order-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api-gateway/getway.iml" filepath="$PROJECT_DIR$/api-gateway/getway.iml" />
     </modules>
   </component>
 </project>

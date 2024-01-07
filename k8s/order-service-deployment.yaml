@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: order-service-app
-          image: ousmane1999/orderservice
+          image: ousmane1999/fruits-order-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9291

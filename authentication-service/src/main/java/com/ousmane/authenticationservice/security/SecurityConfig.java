@@ -1,90 +1,55 @@
 package com.ousmane.authenticationservice.security;
 
-import com.ousmane.authenticationservice.jwt.AuthTokenFilter;
-import com.ousmane.authenticationservice.jwt.JwtAccessDeniedHandler;
-import com.ousmane.authenticationservice.jwt.JwtAuthenticationEntryPoint;
-import com.ousmane.authenticationservice.jwt.JwtUtils;
+import com.ousmane.authenticationservice.exceptions.JwtAccessDeniedHandler;
+import com.ousmane.authenticationservice.exceptions.JwtAuthenticationEntryPoint;
+import com.ousmane.authenticationservice.jwt.config.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
-    private final JwtAccessDeniedHandler accessDeniedHandler;
-    private final JwtUtils jwtUtils;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthenticationFilter jwtFilter;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final AuthenticationProvider authenticationProvider;
 
-    private static final String[] URLS ={
-            "/authenticate/signUp", "/authenticate/login",
-            "/authenticate/refreshToken",
-            "/actuator/**", "/v2/api-docs",
+    private static final String[] URLS = {
+            "/v1/auth/**", "/actuator/**", "/v2/api-docs",
             "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
             "/swagger-resources/**", "/configuration/ui",
             "/configuration/security", "/swagger-ui/**",
             "/webjars/**", "/swagger-ui.html"};
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            final AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .headers().frameOptions().disable().and()
-                .cors().and()
-                .csrf().disable()
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(URLS).permitAll()
-                        .anyRequest().authenticated())
-                .formLogin().disable()
-                .httpBasic().disable()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(authTokenFilter(jwtUtils,
-                        customUserDetailsService), UsernamePasswordAuthenticationFilter.class);
-
+        http.csrf().disable()
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(URLS).permitAll();
+                    auth.requestMatchers("/api/secured/endpoint/admin").hasAuthority("ADMIN");
+                    auth.requestMatchers("/api/secured/endpoint/user").hasAuthority("USER");
+                    auth.requestMatchers("/api/secured/endpoint/user_admin").hasAnyAuthority("USER", "ADMIN");
+                    auth.requestMatchers("/v1/app/demo-controller").hasAnyAuthority("USER", "ADMIN");
+                    auth.requestMatchers("/v1/app/students").hasRole("ADMIN");
+                    auth.anyRequest().authenticated();
+                })
+                .exceptionHandling(ex -> {
+                    ex.accessDeniedHandler(jwtAccessDeniedHandler);
+                    ex.authenticationEntryPoint(jwtAuthenticationEntryPoint);
+                })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-
-//    @Bean
-//    public WebSecurityCustomizer customizer(){
-//        return (web) -> web.ignoring()
-//                .requestMatchers("/authenticate/signup", "/authenticate/login",
-//                "/authenticate/refreshtoken");
-//    }
-    @Bean
-    public AuthTokenFilter authTokenFilter(
-            JwtUtils jwts, CustomUserDetailsService userService){
-        return new AuthTokenFilter(jwts, userService);
     }
 }

@@ -1,0 +1,58 @@
+package com.ousmane.authenticationservice.jwt.auth;
+
+import com.ousmane.authenticationservice.entities.Roles;
+import com.ousmane.authenticationservice.entities.Users;
+import com.ousmane.authenticationservice.payload.AuthenticationRequest;
+import com.ousmane.authenticationservice.payload.AuthenticationResponse;
+import com.ousmane.authenticationservice.payload.RegisterRequest;
+import com.ousmane.authenticationservice.repository.UserRepository;
+import com.ousmane.authenticationservice.jwt.config.JwtService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Set;
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationService {
+
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+
+
+    public AuthenticationResponse registerUser(RegisterRequest register) {
+        var user = Users.builder()
+                .firstName(register.getFirstName())
+                .lastName(register.getLastName())
+                .email(register.getEmail())
+                .password(passwordEncoder.encode(register.getPassword()))
+                .roles(register.getRoles())
+                .build();
+        userRepository.save(user);
+        return tokenize(user);
+    }
+
+    public AuthenticationResponse authenticateUser(AuthenticationRequest authResponse) {
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(authResponse.getEmail(), authResponse.getPassword());
+        authenticationManager.authenticate(authentication);
+
+        var user = userRepository.findByEmail(authResponse.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("Sorry, user email not found"));
+        return tokenize(user);
+    }
+
+
+    // Refactors the return type of the applications
+    private AuthenticationResponse tokenize(Users users) {
+        return AuthenticationResponse.builder()
+                .token(jwtService.generateTokenWithoutExtractClaims(users))
+                .build();
+    }
+}

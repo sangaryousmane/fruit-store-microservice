@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="fruits-customers-service" />
+        <module name="getway" />
         <module name="authentication-service" />
         <module name="fruits-order-service" />
         <module name="fruit-service-registry" />
@@ -20,6 +21,8 @@
       <module name="fruits-consumer-service" target="17" />
       <module name="fruits-customers-service" target="17" />
       <module name="fruits-order-service" target="17" />
+      <module name="getway" target="17" />
+      <module name="social-login" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -29,6 +32,8 @@
       <module name="fruits-consumer-service" options="-parameters" />
       <module name="fruits-customers-service" options="-parameters" />
       <module name="fruits-order-service" options="-parameters" />
+      <module name="getway" options="-parameters" />
+      <module name="social-login" options="-parameters" />
     </option>
   </component>
 </project>

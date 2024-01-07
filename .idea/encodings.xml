@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/../bank-management-system/api-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/api-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/api-gateway/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/authentication-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/authentication-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fruit-service-registry/src/main/java" charset="UTF-8" />
@@ -10,5 +13,7 @@
     <file url="file://$PROJECT_DIR$/fruits-customers-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fruits-order-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fruits-order-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-social-login-main/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-social-login-main/src/main/resources" charset="UTF-8" />
   </component>
 </project>

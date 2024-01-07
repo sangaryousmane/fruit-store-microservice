@@ -8,6 +8,8 @@
         <option value="$PROJECT_DIR$/fruits-customers-service/pom.xml" />
         <option value="$PROJECT_DIR$/fruit-service-registry/pom.xml" />
         <option value="$PROJECT_DIR$/authentication-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../bank-management-system/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
       </list>
     </option>
   </component>

@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: customer-service-app
-          image: ousmane1999/customerservice
+          image: ousmane1999/fruit-customers-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9292

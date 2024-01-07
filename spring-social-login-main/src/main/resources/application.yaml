@@ -1,0 +1,47 @@
+server:
+  port: 9000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/customerdb
+    username: postgres
+    password: 831800
+    driverClassName: org.postgresql.Driver
+    hikari:
+      initialization-fail-timeout: 0
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format-sql: true
+    database: postgresql
+    databasePlatform: org.hibernate.dialect.PostgreSQLDialect
+app:
+  jwtSecret:
+    token: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+
+
+
+
+
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            client-id: Iv1.0260f2487b9aaa4f
+#            client-secret: bdf9e1c2da3127f5438acbecfcad19514ec2427a
+##          google:
+##            clientId:
+##            clientSecret:

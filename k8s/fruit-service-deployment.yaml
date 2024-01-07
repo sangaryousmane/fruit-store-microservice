@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: fruit-service-app
-          image: ousmane1999/fruitservice
+          image: ousmane1999/fruit-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9293
