@@ -32,10 +32,11 @@ This repository contains a simple Fruit Store Microservice built with Spring Boo
 3. **Build each service in the root directory**
    cd fruits-microservice
    
-4. Endpoint
+4. Endpoints
 * GET /api/v1/fruits: Retrieve all fruits.
 * GET /api/v1/fruits/{id}: Retrieve a specific fruit by ID.
 * POST /api/v1/fruits/saveFruit: Add a new fruit.
+
 `{
   "name": "Mango",
   "quantity": 10,
@@ -44,6 +45,7 @@ This repository contains a simple Fruit Store Microservice built with Spring Boo
 
 * PUT /api/v1/fruits/{id}: Update a specific fruit by ID.
 Request Body:
+
 `{
   "name": "Orange",
   "quantity": 15,
@@ -53,10 +55,27 @@ Request Body:
 * DELETE /api/v1/fruits/{id}: Delete a specific fruit by ID.
 * POST /orders/placeOrder: Place an order.
 Request Body:
+
 `{
   "customerId": "customer_id",
   "fruitIds": [1, 2, 3]
   }`
+
+5. Deployment
+* Download terraform and configure on your system
+  `https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli`
+* Navigate to terraform directory and create a new aws ec2 instance 
+ `cd terraform-config 
+  terraform init
+  terraform plan
+  terraform apply
+  `
+* Push your docker images and push to docker hub
+* Deploy to kubernetes cluster
+  ` cd k8s
+    kubectl apply -f *.yaml
+    minikube dashboard
+  `
 
 ## Author
 - [Ousmane Sangary](https://github.com/sangaryousmane) - Software Developer
